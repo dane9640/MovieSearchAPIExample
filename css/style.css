@@ -12,6 +12,7 @@
   background-color: #eee;
   flex-direction: column;
   margin-bottom: 2rem;
-  max-width: 300px;
+  max-width: 20%;
   padding: .5rem;
+  text-align: center;
 }
