@@ -1,17 +1,83 @@
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #ccc;
+}
+
 #resultSection {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
+  animation-name: fade-in;
+  animation-duration: 2s;
+  display: grid;
+  gap: 3rem;
+  grid-template-columns: repeat(auto-fill, 350px);
+  justify-content: center;
+  margin: 5rem auto;
+  padding: 0 1.5rem 1.5rem 0;
+  width: 95%;
 }
 
 #resultSection h2 {
+  counter-reset: cards;
   width: 100%;
 }
 
+.movieInfo {
+  display: flex;
+  flex-flow: column;
+  text-align: left;
+  width: 100%;
+}
+
+.movieInfo h3 {
+  background-color: #000;
+  border-radius: 15px 0 0 0;
+  color: #fff;
+  margin: 0;
+  padding: 1.5rem .5rem;
+}
+
 .movieCard {
+  justify-content: space-around;
   background-color: #eee;
-  flex-direction: column;
-  margin-bottom: 2rem;
-  max-width: 300px;
-  padding: .5rem;
+  border-radius: 15px;
+  box-shadow: 8px 8px 15px 1px #000000;
+  counter-increment: cards;
+  display: flex;
+  height: 300px;
+}
+
+.movieCard:hover {
+  background-color: #333;
+  box-shadow: 8px 8px 15px 1px #540;
+}
+
+.movieCard:hover .movieInfo h3 {
+  background-color: #fff;
+  color: #000;
+}
+
+.movieCard:hover .movieInfo p {
+  color: #fff;
+}
+
+.movieCard h3::before {
+  content: counter(cards)". ";
+}
+
+.movieCard img {
+  align-self: space-between;
+  height: auto;
+  max-width: 60%;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 100;
+  }
 }
