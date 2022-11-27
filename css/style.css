@@ -1,11 +1,13 @@
 #resultSection {
+  animation-name: fade-in;
+  animation-duration: 2s;
   display: grid;
   gap: 3rem;
   grid-template-columns: repeat(auto-fill, 350px);
   justify-content: center;
-  margin: auto;
+  margin: 5rem auto;
   padding: 0 1.5rem 1.5rem 0;
-  width: 85%;
+  width: 95%;
 }
 
 #resultSection h2 {
@@ -29,12 +31,13 @@
 }
 
 .movieCard {
-  justify-content: center;
+  justify-content: space-around;
   background-color: #eee;
   border-radius: 15px;
   box-shadow: 8px 8px 15px 1px #000000;
   counter-increment: cards;
   display: flex;
+  height: 300px;
 }
 
 .movieCard:hover {
@@ -58,5 +61,14 @@
 .movieCard img {
   align-self: space-between;
   height: auto;
-  max-width: 50%;
+  max-width: 60%;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 100;
+  }
 }

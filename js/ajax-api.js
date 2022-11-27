@@ -9,6 +9,9 @@ Lazy Loading tutorial for API calls:
 https://medium.com/@kennethscoggins/how-to-use-the-infinite-scrolling-method-in-javascript-to-manage-large-api-result-sets-b8f78dba66fb
 */
 
+const API_KEY = '58017d81';
+const URL_FRONT = `http://www.omdbapi.com/?apikey=${API_KEY}&type=movie&`;
+
 submitSearchTerm();
 
 /*
@@ -16,29 +19,27 @@ submitSearchTerm();
  *
  */
 function submitSearchTerm(){
-  
   const SEARCH_BUTTON = document.querySelector('input[type="submit"]');
-  const API_KEY = 'f3786fc1';
-  const URL = `http://www.omdbapi.com/?apikey=${API_KEY}&`;
-
-
-  var page = 1;
+  
   var searchTerm = '';
-  var scrollable = false;
-
+  var page = 1;
+  
   SEARCH_BUTTON.addEventListener('click', (e) => {
     e.preventDefault();
     page = 1;
-    
     searchTerm = `s=${document.querySelector('#search').value}`;
 
-    createRequest(`${URL}${searchTerm}&page=${page}`, searchSuccess, searchError, e);
+    createRequest(`${URL_FRONT}${searchTerm}&page=${page}`, searchSuccess, searchError, e);
+    if(document.body.offsetHeight - 200 < window.innerHeight + scrollY){
+      page++;
+      createRequest(`${URL_FRONT}${searchTerm}&page=${page}`, searchSuccess, searchError, 'scroll');
+    }
   });
 
   window.addEventListener('scroll', (e) => {
     if(window.innerHeight + window.scrollY > document.body.offsetHeight - 200){
       page++;
-      createRequest(`${URL}${searchTerm}&page=${page}`, searchSuccess, searchError, e);
+      createRequest(`${URL_FRONT}${searchTerm}&page=${page}`, searchSuccess, searchError, e);
     }
   });
 }
@@ -96,7 +97,6 @@ function searchSuccess(data, sourceEvent){
     var resultSection = document.createElement('section');
     resultSection.setAttribute('id', 'resultSection');
     h2.insertAdjacentElement('afterend', resultSection);
-    
   }
   
   if (data.totalResults){
@@ -126,7 +126,9 @@ function searchSuccess(data, sourceEvent){
 
       resultSection.insertAdjacentElement('beforeend', movieCard);
     });
+
   }
+  
 }
 
 /*
