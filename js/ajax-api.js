@@ -24,6 +24,7 @@ function submitSearchTerm(){
 
   var page = 1;
   var searchTerm = '';
+  var scrollable = false;
 
   SEARCH_BUTTON.addEventListener('click', (e) => {
     e.preventDefault();
