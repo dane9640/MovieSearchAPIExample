@@ -9,16 +9,16 @@ Lazy Loading tutorial for API calls:
 https://medium.com/@kennethscoggins/how-to-use-the-infinite-scrolling-method-in-javascript-to-manage-large-api-result-sets-b8f78dba66fb
 */
 
-const API_KEY = '58017d81';
-const URL_FRONT = `http://www.omdbapi.com/?apikey=${API_KEY}&type=movie&`;
 
 submitSearchTerm();
 
 /*
- * Builds URL string from user's search term/phrase
- *
- */
+* Builds URL string from user's search term/phrase
+*
+*/
 function submitSearchTerm(){
+  const API_KEY = '58017d81';
+  const URL_FRONT = `http://www.omdbapi.com/?apikey=${API_KEY}&type=movie&`;
   const SEARCH_BUTTON = document.querySelector('input[type="submit"]');
   
   var searchTerm = '';
@@ -44,9 +44,14 @@ function submitSearchTerm(){
   });
 }
 
-/*
- * Creates fetch request
- *
+/**
+ * Creates the Fetch Object
+ * 
+ * 
+ * @param {String} url - Endpoint URL for fetch request
+ * @param {Function} succeed - The function for the succeed promise
+ * @param {Function} fail - The function for the fail catch
+ * @param {Event} sourceEvent - The event that triggered call
  */
 function createRequest(url, succeed, fail, sourceEvent){
   fetch(url)
@@ -55,8 +60,10 @@ function createRequest(url, succeed, fail, sourceEvent){
     .catch((error) => fail(error));
 }
 
-/*
+/**
  * Handles fetch errors
+ *
+ * @param {Response} response - Response from fetch request
  *
  */
 function handleErrors(response){
@@ -67,13 +74,18 @@ function handleErrors(response){
   return response.json();
 }
 
-/*
+/**
  * Updates DOM on a successful search, including 'no movies found'
+
  *
+ * @param {Parsed JSON} data - Parsed JSON from the handle errors response
+ * @param {Event} sourceEvent - Event that triggered initial call to fetch
  */
 function searchSuccess(data, sourceEvent){
   const SEARCH_TERM = document.querySelector('#search').value
   const HR = document.querySelector('hr');
+
+  document.title = `${SEARCH_TERM} | Results`;
 
   if(!document.querySelector('h2')){
     var h2 = document.createElement('h2');
@@ -94,7 +106,7 @@ function searchSuccess(data, sourceEvent){
       resultSection.innerHTML = '';
     }
   } else {
-    var resultSection = document.createElement('section');
+    var resultSection = document.createElement('ol');
     resultSection.setAttribute('id', 'resultSection');
     h2.insertAdjacentElement('afterend', resultSection);
   }
@@ -102,13 +114,14 @@ function searchSuccess(data, sourceEvent){
   if (data.totalResults){
     var searchResults = data.Search;
     searchResults.forEach((result, i) => {
-      var movieCard = document.createElement('div');
+      var movieCard = document.createElement('li');
       movieCard.setAttribute('class','movieCard');
       
       var movieInfo = document.createElement('div');
-      movieInfo.setAttribute('id', 'movieInfo');
+      movieInfo.setAttribute('class', 'movieInfo');
       var movieTitle = document.createElement('h3');
       var moviePoster = document.createElement('img');
+      moviePoster.setAttribute('alt', `${movieTitle} Poster`);
       var movieYear = document.createElement('p');
 
       movieTitle.innerText = `${result.Title}`;
@@ -131,9 +144,10 @@ function searchSuccess(data, sourceEvent){
   
 }
 
-/*
+/**
  * Updates DOM on a failed search (fetch error)
  *
+ * @param {String} error - Error message caught from the error handling
  */
 function searchError(error){
   console.log(error);

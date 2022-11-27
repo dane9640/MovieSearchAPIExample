@@ -1,3 +1,12 @@
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #ccc;
+}
+
 #resultSection {
   animation-name: fade-in;
   animation-duration: 2s;
@@ -15,14 +24,14 @@
   width: 100%;
 }
 
-#movieInfo {
+.movieInfo {
   display: flex;
   flex-flow: column;
   text-align: left;
   width: 100%;
 }
 
-#movieInfo h3 {
+.movieInfo h3 {
   background-color: #000;
   border-radius: 15px 0 0 0;
   color: #fff;
@@ -45,12 +54,12 @@
   box-shadow: 8px 8px 15px 1px #540;
 }
 
-.movieCard:hover #movieInfo h3 {
+.movieCard:hover .movieInfo h3 {
   background-color: #fff;
   color: #000;
 }
 
-.movieCard:hover #movieInfo p {
+.movieCard:hover .movieInfo p {
   color: #fff;
 }
 
