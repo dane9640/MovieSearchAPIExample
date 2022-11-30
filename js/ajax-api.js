@@ -120,6 +120,8 @@ function searchSuccess(data, sourceEvent){
       var movieInfo = document.createElement('div');
       movieInfo.setAttribute('class', 'movieInfo');
       var movieTitle = document.createElement('h3');
+      var posterContainer = document.createElement('div');
+      posterContainer.setAttribute('class', 'posterContainer');
       var moviePoster = document.createElement('img');
       moviePoster.setAttribute('alt', `${movieTitle} Poster`);
       var movieYear = document.createElement('p');
@@ -135,7 +137,8 @@ function searchSuccess(data, sourceEvent){
       } else {
         moviePoster.setAttribute('src', '../images/noposter.gif');
       }
-      movieCard.insertAdjacentElement('beforeend', moviePoster);
+      posterContainer.insertAdjacentElement('beforeend', moviePoster);
+      movieCard.insertAdjacentElement('beforeend', posterContainer);
 
       resultSection.insertAdjacentElement('beforeend', movieCard);
     });
