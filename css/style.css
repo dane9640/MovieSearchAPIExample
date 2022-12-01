@@ -85,6 +85,14 @@ body {
   width: 100%;
 }
 
+/*** Modal Styling ***/
+.modalContainer {
+  display: none;
+  height: 100%;
+  position: absolute;
+  width: 100%;
+}
+
 @keyframes fade-in {
   from {
     opacity: 0;

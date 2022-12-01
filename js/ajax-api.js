@@ -4,10 +4,14 @@ omdbapi.com
 http://www.omdbapi.com/?apikey=[yourkey]&
 
 
+e0436bdd
 
 Lazy Loading tutorial for API calls:
 https://medium.com/@kennethscoggins/how-to-use-the-infinite-scrolling-method-in-javascript-to-manage-large-api-result-sets-b8f78dba66fb
 */
+
+// My only global variable.
+const API_KEY = 'd00f2a4c';
 
 
 submitSearchTerm();
@@ -17,7 +21,6 @@ submitSearchTerm();
 *
 */
 function submitSearchTerm(){
-  const API_KEY = '58017d81';
   const URL_FRONT = `http://www.omdbapi.com/?apikey=${API_KEY}&type=movie&`;
   const SEARCH_BUTTON = document.querySelector('input[type="submit"]');
   
@@ -116,6 +119,8 @@ function searchSuccess(data, sourceEvent){
     searchResults.forEach((result, i) => {
       var movieCard = document.createElement('li');
       movieCard.setAttribute('class','movieCard');
+      movieCard.dataset.movieTitle = result.Title;
+      movieCard.addEventListener('click', (e) => getDetails(e));
       
       var movieInfo = document.createElement('div');
       movieInfo.setAttribute('class', 'movieInfo');
@@ -154,4 +159,32 @@ function searchSuccess(data, sourceEvent){
  */
 function searchError(error){
   console.log(error);
+}
+
+function getDetails(event){
+  const DETAILS_ENDPOINT_BEGIN = `http://www.omdbapi.com/?apiKey=${API_KEY}&t=`;
+  const EVENT_CARD = event.currentTarget;
+  
+  var id = EVENT_CARD.dataset.movieTitle;
+  console.log(id)
+  createRequest(`${DETAILS_ENDPOINT_BEGIN}&t=${id}`, buildModal, searchError, event);
+}
+
+function buildModal(data, event) {
+  var modalContainer = document.querySelector('.modalContainer');
+
+  if(document.querySelector('.modalContent')) {
+    var modalContent = document.querySelector('.modalContent');
+    modalContent.innerHTML = '';
+  } else {
+    var modalContent = document.createElement('section');
+    modalContent.setAttribute('class', 'modalContent');
+  }
+  console.log(data);
+  var title = data.Title;
+  var year = data.Year;
+  var plot = data.Plot;
+  
+  console.log(title,year,plot)
+
 }
