@@ -120,6 +120,7 @@ function searchSuccess(data, sourceEvent){
       var movieCard = document.createElement('li');
       movieCard.setAttribute('class','movieCard');
       movieCard.dataset.movieTitle = result.Title;
+      movieCard.dataset.id = result.imdbID;
       movieCard.addEventListener('click', (e) => getDetails(e));
       
       var movieInfo = document.createElement('div');
@@ -135,6 +136,7 @@ function searchSuccess(data, sourceEvent){
       movieYear.innerText = result.Year;
       movieInfo.insertAdjacentElement('beforeend', movieTitle);
       movieInfo.insertAdjacentElement('beforeend', movieYear);
+      movieInfo.innerHTML += `<a href='#'>Details >>></a>`
       movieCard.insertAdjacentElement('beforeend', movieInfo);
       
       if(result.Poster != 'N/A'){
@@ -161,15 +163,26 @@ function searchError(error){
   console.log(error);
 }
 
+/**
+ * Builds an endpoint for searching specific movie
+ *
+ * @param {Event} event the event that triggered the function
+ */
 function getDetails(event){
-  const DETAILS_ENDPOINT_BEGIN = `http://www.omdbapi.com/?apiKey=${API_KEY}&t=`;
+  const DETAILS_ENDPOINT_BEGIN = `http://www.omdbapi.com/?apiKey=${API_KEY}`;
   const EVENT_CARD = event.currentTarget;
   
-  var id = EVENT_CARD.dataset.movieTitle;
-  console.log(id)
-  createRequest(`${DETAILS_ENDPOINT_BEGIN}&t=${id}`, buildModal, searchError, event);
+  var id = EVENT_CARD.dataset.id;
+  createRequest(`${DETAILS_ENDPOINT_BEGIN}&i=${id}&plot=full`, buildModal, searchError, event);
 }
 
+
+/**
+ * builds the modal detail box for the specific movie if a response is found
+ *
+ * @param {Parsed JSON} data Parsed JSON from request
+ * @param {Event} event event that trigged function
+ */
 function buildModal(data, event) {
   var modalContainer = document.querySelector('.modalContainer');
 
@@ -180,11 +193,45 @@ function buildModal(data, event) {
     var modalContent = document.createElement('section');
     modalContent.setAttribute('class', 'modalContent');
   }
-  console.log(data);
+
   var title = data.Title;
   var year = data.Year;
   var plot = data.Plot;
+  var moviePoster = document.createElement('img');
+  moviePoster.setAttribute('alt', `${title} Poster`);
   
-  console.log(title,year,plot)
+  if(data.Poster != 'N/A'){
+    moviePoster.setAttribute('src', data.Poster);
+  } else {
+    moviePoster.setAttribute('src', '../images/noposter.gif');
+  }
 
+  modalContent.innerHTML = `<h2>${title}</h2>
+                            <span class="close">&times;</span>
+                            <p>${year}</p>
+                            <p>${plot}</p>`;
+  modalContent.insertAdjacentElement('beforeend', moviePoster);
+  
+  modalContainer.insertAdjacentElement('beforeend', modalContent);
+  toggleDisplay(modalContainer, 'flex');
+  
+  modalContainer.addEventListener('click', (e) => {
+    if (e.target == e.currentTarget || e.target == document.querySelector('.close')){
+      toggleDisplay(e.currentTarget);
+    }
+  });
+}
+
+/**
+ * Sets display of element to setting and none if left empty
+ *
+ * @param {HTML Element} element element you want to set the display on.
+ * @param {String} setting setting you want to set dispaly to eg. flex grid block etc.
+ */
+function toggleDisplay(element, setting){
+  if(setting == undefined){
+    element.style.display = 'none';
+  } else {
+    element.style.display = setting;
+  }
 }
