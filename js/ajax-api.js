@@ -1,18 +1,14 @@
 /*
-Project API:
-omdbapi.com
+Git Repo: https://github.com/dane9640/Project14-web215
+
+Project API: omdbapi.com
 http://www.omdbapi.com/?apikey=[yourkey]&
 
-
+Extra API KEYS:
+---------------
 e0436bdd
-
-Lazy Loading tutorial for API calls:
-https://medium.com/@kennethscoggins/how-to-use-the-infinite-scrolling-method-in-javascript-to-manage-large-api-result-sets-b8f78dba66fb
 */
-
-// My only global variable.
 const API_KEY = 'd00f2a4c';
-
 
 submitSearchTerm();
 
@@ -21,16 +17,28 @@ submitSearchTerm();
 *
 */
 function submitSearchTerm(){
-  const URL_FRONT = `http://www.omdbapi.com/?apikey=${API_KEY}&type=movie&`;
+  const URL_FRONT = `http://www.omdbapi.com/?apikey=${API_KEY}&type=movie&s=`;
   const SEARCH_BUTTON = document.querySelector('input[type="submit"]');
   
+  var searchBar = document.querySelector('#search');
   var searchTerm = '';
   var page = 1;
   
+  if(localStorage.searchTerm){
+    searchBar.value = localStorage.searchTerm;
+    searchTerm = searchBar.value;
+    
+    createRequest(`${URL_FRONT}${localStorage.searchTerm}&page=${page}`, searchSuccess, searchError, new Event('click'));
+    if(document.body.offsetHeight - 200 < window.innerHeight + scrollY){
+      page++;
+      createRequest(`${URL_FRONT}${localStorage.searchTerm}&page=${page}`, searchSuccess, searchError, 'scroll');
+    }
+  }
+   
   SEARCH_BUTTON.addEventListener('click', (e) => {
     e.preventDefault();
     page = 1;
-    searchTerm = `s=${document.querySelector('#search').value}`;
+    searchTerm = `${document.querySelector('#search').value}`;
 
     createRequest(`${URL_FRONT}${searchTerm}&page=${page}`, searchSuccess, searchError, e);
     if(document.body.offsetHeight - 200 < window.innerHeight + scrollY){
@@ -85,8 +93,11 @@ function handleErrors(response){
  * @param {Event} sourceEvent - Event that triggered initial call to fetch
  */
 function searchSuccess(data, sourceEvent){
+  console.log(data)
   const SEARCH_TERM = document.querySelector('#search').value
   const HR = document.querySelector('hr');
+
+  var remember = true;
 
   document.title = `${SEARCH_TERM} | Results`;
 
@@ -97,11 +108,37 @@ function searchSuccess(data, sourceEvent){
     var h2 = document.querySelector('h2');
   }
 
-  if(!data.totalResults && sourceEvent.type == 'click'){
-    h2.innerText = `Sorry. No movies found with ${SEARCH_TERM}`;
-  } else if(sourceEvent.type != 'scroll'){
-    h2.innerText = `Total matches for ${SEARCH_TERM}: ${data.totalResults}`;
+  if (document.querySelector('#remember')){
+    var remember = document.querySelector('#remember');
+    remember.innerText = 'Don\'t remember this search';
+  } else {
+    var remember = document.createElement('span');
+    remember.id = 'remember';
+    remember.innerText = 'Don\'t remember this search'
   }
+  
+  if(sourceEvent.type == 'click'){
+    if(data.totalResults == undefined) {
+      h2.innerText = `Sorry. No movies found with ${SEARCH_TERM}`;
+    } else{
+      h2.innerText = `Total matches for ${SEARCH_TERM}: ${data.totalResults}`;
+      h2.insertAdjacentElement('afterend', remember);
+      localStorage.setItem('searchTerm', SEARCH_TERM);
+    }
+  }
+
+  remember.addEventListener('click', (e) => {
+    if(remember){
+      localStorage.clear();
+      e.currentTarget.innerText = 'Search won\'t be remembered'
+      e.currentTarget.style.textDecoration = 'none';
+    } else {
+      e.currentTarget.innerText = 'Don\'t remember this search';
+      e.currentTarget.style.textDecoration = '';
+      localStorage.setItem('searchTerm', document.querySelector('#search').value);
+    }
+    remember = !remember;
+  });
 
   if(document.querySelector('#resultSection')){
     var resultSection = document.querySelector('#resultSection');
@@ -111,7 +148,7 @@ function searchSuccess(data, sourceEvent){
   } else {
     var resultSection = document.createElement('ol');
     resultSection.setAttribute('id', 'resultSection');
-    h2.insertAdjacentElement('afterend', resultSection);
+    remember.insertAdjacentElement('afterend', resultSection);
   }
   
   if (data.totalResults){
@@ -175,7 +212,6 @@ function getDetails(event){
   var id = EVENT_CARD.dataset.id;
   createRequest(`${DETAILS_ENDPOINT_BEGIN}&i=${id}&plot=full`, buildModal, searchError, event);
 }
-
 
 /**
  * builds the modal detail box for the specific movie if a response is found

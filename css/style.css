@@ -1,4 +1,6 @@
+/* Git Repo: https://github.com/dane9640/Project14-web215 */
 
+/****** General Styling ******/
 * {
   box-sizing: border-box;
 }
@@ -6,6 +8,7 @@
 body {
   background-color: #ccc;
   margin: 0;
+  padding-left: .5rem;
   position: relative;
 }
 
@@ -19,6 +22,17 @@ img {
   width: 100%;
 }
 
+
+/****** Search Result Styling ******/
+#remember {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+#remember:hover {
+  font-weight: bold;
+}
+
 #resultSection {
   animation-name: fade-in;
   animation-duration: 2s;
@@ -26,7 +40,7 @@ img {
   gap: 3rem;
   grid-template-columns: repeat(auto-fill, 400px);
   justify-content: center;
-  margin: 0 auto auto 0;
+  margin: 1rem auto auto 0;
   padding: 0 1.5rem 1.5rem 0;
   width: 95%;
 }
@@ -157,8 +171,6 @@ img {
   cursor: pointer;
   font-weight: bold;
 }
-
-
 
 
 /****** Animations ******/
