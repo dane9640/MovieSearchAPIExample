@@ -184,7 +184,7 @@ function searchSuccess(data, sourceEvent){
         moviePoster.setAttribute('src', result.Poster);
         moviePoster.setAttribute('alt', `${movieTitle.innerText} Poster`);
       } else {
-        moviePoster.setAttribute('src', '/images/noposter.gif');
+        moviePoster.setAttribute('src', 'images/noposter.gif');
         moviePoster.setAttribute('alt', `No Poster Found`);
       }
 
@@ -241,12 +241,13 @@ function buildModal(data, event) {
   var year = data.Year;
   var plot = data.Plot;
   var moviePoster = document.createElement('img');
-  moviePoster.setAttribute('alt', `${title} Poster`);
   
   if(data.Poster != 'N/A'){
     moviePoster.setAttribute('src', data.Poster);
+    moviePoster.setAttribute('alt', `${title} Poster`);
   } else {
-    moviePoster.setAttribute('src', '../images/noposter.gif');
+    moviePoster.setAttribute('src', ' images/noposter.gif');
+    moviePoster.setAttribute('alt', `No Poster Found`);
   }
 
   modalContent.innerHTML = `<h2>${title}</h2>
