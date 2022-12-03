@@ -44,7 +44,6 @@ function submitSearchTerm(){
     e.preventDefault();
     page = 1;
     searchTerm = `${document.querySelector('#search').value}`;
-    localStorage.setItem('searchTerm', searchTerm);
 
     createRequest(`${URL_FRONT}${searchTerm}&page=${page}`, searchSuccess, searchError, e);
     if(document.body.offsetHeight - 200 < window.innerHeight + scrollY){
@@ -103,6 +102,8 @@ function searchSuccess(data, sourceEvent){
   const SEARCH_TERM = document.querySelector('#search').value
   const HR = document.querySelector('hr');
 
+  var remember = true;
+
   document.title = `${SEARCH_TERM} | Results`;
 
   if(!document.querySelector('h2')){
@@ -112,13 +113,37 @@ function searchSuccess(data, sourceEvent){
     var h2 = document.querySelector('h2');
   }
 
+  if (document.querySelector('#remember')){
+    var remember = document.querySelector('#remember');
+    remember.innerText = 'Don\'t remember this search';
+  } else {
+    var remember = document.createElement('span');
+    remember.id = 'remember';
+    remember.innerText = 'Don\'t remember this search'
+  }
+  
   if(sourceEvent.type == 'click'){
     if(data.totalResults == undefined) {
       h2.innerText = `Sorry. No movies found with ${SEARCH_TERM}`;
     } else{
       h2.innerText = `Total matches for ${SEARCH_TERM}: ${data.totalResults}`;
+      h2.insertAdjacentElement('afterend', remember);
+      localStorage.setItem('searchTerm', SEARCH_TERM);
     }
   }
+
+  remember.addEventListener('click', (e) => {
+    if(remember){
+      localStorage.clear();
+      e.currentTarget.innerText = 'Search won\'t be remembered'
+      e.currentTarget.style.textDecoration = 'none';
+    } else {
+      e.currentTarget.innerText = 'Don\'t remember this search';
+      e.currentTarget.style.textDecoration = '';
+      localStorage.setItem('searchTerm', document.querySelector('#search').value);
+    }
+    remember = !remember;
+  });
 
   if(document.querySelector('#resultSection')){
     var resultSection = document.querySelector('#resultSection');
@@ -128,7 +153,7 @@ function searchSuccess(data, sourceEvent){
   } else {
     var resultSection = document.createElement('ol');
     resultSection.setAttribute('id', 'resultSection');
-    h2.insertAdjacentElement('afterend', resultSection);
+    remember.insertAdjacentElement('afterend', resultSection);
   }
   
   if (data.totalResults){
