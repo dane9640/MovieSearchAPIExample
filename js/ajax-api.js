@@ -1,18 +1,14 @@
 /*
-Project API:
-omdbapi.com
+Git Repo: https://github.com/dane9640/Project14-web215
+
+Project API: omdbapi.com
 http://www.omdbapi.com/?apikey=[yourkey]&
 
-
+Extra API KEYS:
+---------------
 e0436bdd
-
-Lazy Loading tutorial for API calls:
-https://medium.com/@kennethscoggins/how-to-use-the-infinite-scrolling-method-in-javascript-to-manage-large-api-result-sets-b8f78dba66fb
 */
-
-// My only global variable.
 const API_KEY = 'd00f2a4c';
-
 
 submitSearchTerm();
 
@@ -38,8 +34,7 @@ function submitSearchTerm(){
       createRequest(`${URL_FRONT}${localStorage.searchTerm}&page=${page}`, searchSuccess, searchError, 'scroll');
     }
   }
-  
-  
+   
   SEARCH_BUTTON.addEventListener('click', (e) => {
     e.preventDefault();
     page = 1;
@@ -217,7 +212,6 @@ function getDetails(event){
   var id = EVENT_CARD.dataset.id;
   createRequest(`${DETAILS_ENDPOINT_BEGIN}&i=${id}&plot=full`, buildModal, searchError, event);
 }
-
 
 /**
  * builds the modal detail box for the specific movie if a response is found

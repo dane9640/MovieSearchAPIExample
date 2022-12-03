@@ -1,4 +1,6 @@
+/* Git Repo: https://github.com/dane9640/Project14-web215 */
 
+/****** General Styling ******/
 * {
   box-sizing: border-box;
 }
@@ -18,6 +20,17 @@ h1 {
 img {
   height: auto;
   width: 100%;
+}
+
+
+/****** Search Result Styling ******/
+#remember {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+#remember:hover {
+  font-weight: bold;
 }
 
 #resultSection {
@@ -159,14 +172,6 @@ img {
   font-weight: bold;
 }
 
-#remember {
-  cursor: pointer;
-  text-decoration: underline;
-}
-
-#remember:hover {
-  font-weight: bold;
-}
 
 /****** Animations ******/
 @keyframes fade-in {
