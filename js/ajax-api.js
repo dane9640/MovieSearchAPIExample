@@ -112,10 +112,12 @@ function searchSuccess(data, sourceEvent){
     var h2 = document.querySelector('h2');
   }
 
-  if(!data.totalResults && sourceEvent.type == 'click'){
-    h2.innerText = `Sorry. No movies found with ${SEARCH_TERM}`;
-  } else if(sourceEvent.type != 'scroll'){
-    h2.innerText = `Total matches for ${SEARCH_TERM}: ${data.totalResults}`;
+  if(sourceEvent.type == 'click'){
+    if(data.totalResults == undefined) {
+      h2.innerText = `Sorry. No movies found with ${SEARCH_TERM}`;
+    } else{
+      h2.innerText = `Total matches for ${SEARCH_TERM}: ${data.totalResults}`;
+    }
   }
 
   if(document.querySelector('#resultSection')){
