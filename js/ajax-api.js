@@ -17,7 +17,7 @@ submitSearchTerm();
 *
 */
 function submitSearchTerm(){
-  const URL_FRONT = `http://www.omdbapi.com/?apikey=${API_KEY}&type=movie&s=`;
+  const URL_FRONT = `https://www.omdbapi.com/?apikey=${API_KEY}&type=movie&s=`;
   const SEARCH_BUTTON = document.querySelector('input[type="submit"]');
   
   var searchBar = document.querySelector('#search');
@@ -205,7 +205,7 @@ function searchError(error){
  * @param {Event} event the event that triggered the function
  */
 function getDetails(event){
-  const DETAILS_ENDPOINT_BEGIN = `http://www.omdbapi.com/?apiKey=${API_KEY}`;
+  const DETAILS_ENDPOINT_BEGIN = `https://www.omdbapi.com/?apiKey=${API_KEY}`;
   const EVENT_CARD = event.currentTarget;
   
   var id = EVENT_CARD.dataset.id;
