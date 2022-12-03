@@ -119,6 +119,10 @@ function searchSuccess(data, sourceEvent){
   if(sourceEvent.type == 'click'){
     if(data.totalResults == undefined) {
       h2.innerText = `Sorry. No movies found with ${SEARCH_TERM}`;
+      localStorage.clear();
+      if (remember){
+        remember.remove();
+      }
     } else{
       h2.innerText = `Total matches for ${SEARCH_TERM}: ${data.totalResults}`;
       h2.insertAdjacentElement('afterend', remember);
@@ -152,6 +156,7 @@ function searchSuccess(data, sourceEvent){
   
   if (data.totalResults){
     var searchResults = data.Search;
+
     searchResults.forEach((result, i) => {
       var movieCard = document.createElement('li');
       movieCard.setAttribute('class','movieCard');
@@ -165,10 +170,9 @@ function searchSuccess(data, sourceEvent){
       var posterContainer = document.createElement('div');
       posterContainer.setAttribute('class', 'posterContainer');
       var moviePoster = document.createElement('img');
-      moviePoster.setAttribute('alt', `${movieTitle} Poster`);
       var movieYear = document.createElement('p');
-
-      movieTitle.innerText = `${result.Title}`;
+      
+      movieTitle.innerHTML = `${result.Title}`;
       movieYear.innerText = result.Year;
       movieInfo.insertAdjacentElement('beforeend', movieTitle);
       movieInfo.insertAdjacentElement('beforeend', movieYear);
@@ -176,10 +180,14 @@ function searchSuccess(data, sourceEvent){
       movieCard.insertAdjacentElement('beforeend', movieInfo);
       
       if(result.Poster != 'N/A'){
+        console.log(data, moviePoster)
         moviePoster.setAttribute('src', result.Poster);
+        moviePoster.setAttribute('alt', `${movieTitle.innerText} Poster`);
       } else {
-        moviePoster.setAttribute('src', '../images/noposter.gif');
+        moviePoster.setAttribute('src', '/images/noposter.gif');
+        moviePoster.setAttribute('alt', `No Poster Found`);
       }
+
       posterContainer.insertAdjacentElement('beforeend', moviePoster);
       movieCard.insertAdjacentElement('beforeend', posterContainer);
 

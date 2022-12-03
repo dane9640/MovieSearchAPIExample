@@ -30,7 +30,7 @@ img {
 }
 
 #remember:hover {
-  font-weight: bold;
+  color: #540;
 }
 
 #resultSection {
@@ -169,7 +169,6 @@ img {
 
 .close:hover {
   cursor: pointer;
-  font-weight: bold;
 }
 
 
