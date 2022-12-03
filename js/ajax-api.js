@@ -21,16 +21,30 @@ submitSearchTerm();
 *
 */
 function submitSearchTerm(){
-  const URL_FRONT = `http://www.omdbapi.com/?apikey=${API_KEY}&type=movie&`;
+  const URL_FRONT = `http://www.omdbapi.com/?apikey=${API_KEY}&type=movie&s=`;
   const SEARCH_BUTTON = document.querySelector('input[type="submit"]');
   
+  var searchBar = document.querySelector('#search');
   var searchTerm = '';
   var page = 1;
+  
+  if(localStorage.searchTerm){
+    searchBar.value = localStorage.searchTerm;
+    searchTerm = searchBar.value;
+    
+    createRequest(`${URL_FRONT}${localStorage.searchTerm}&page=${page}`, searchSuccess, searchError, new Event('click'));
+    if(document.body.offsetHeight - 200 < window.innerHeight + scrollY){
+      page++;
+      createRequest(`${URL_FRONT}${localStorage.searchTerm}&page=${page}`, searchSuccess, searchError, 'scroll');
+    }
+  }
+  
   
   SEARCH_BUTTON.addEventListener('click', (e) => {
     e.preventDefault();
     page = 1;
-    searchTerm = `s=${document.querySelector('#search').value}`;
+    searchTerm = `${document.querySelector('#search').value}`;
+    localStorage.setItem('searchTerm', searchTerm);
 
     createRequest(`${URL_FRONT}${searchTerm}&page=${page}`, searchSuccess, searchError, e);
     if(document.body.offsetHeight - 200 < window.innerHeight + scrollY){
@@ -85,6 +99,7 @@ function handleErrors(response){
  * @param {Event} sourceEvent - Event that triggered initial call to fetch
  */
 function searchSuccess(data, sourceEvent){
+  console.log(data)
   const SEARCH_TERM = document.querySelector('#search').value
   const HR = document.querySelector('hr');
 
