@@ -93,7 +93,6 @@ function handleErrors(response){
  * @param {Event} sourceEvent - Event that triggered initial call to fetch
  */
 function searchSuccess(data, sourceEvent){
-  console.log(data)
   const SEARCH_TERM = document.querySelector('#search').value
   const HR = document.querySelector('hr');
 
