@@ -173,7 +173,7 @@ function searchSuccess(data, sourceEvent){
       var movieYear = document.createElement('p');
       
       movieTitle.innerHTML = `${result.Title}`;
-      movieYear.innerText = result.Year;
+      movieYear.innerHTML = `<time datetime="${result.Year}">${result.Year}</time>`;
       movieInfo.insertAdjacentElement('beforeend', movieTitle);
       movieInfo.insertAdjacentElement('beforeend', movieYear);
       movieInfo.innerHTML += `<a href='#'>Details >>></a>`
@@ -252,7 +252,7 @@ function buildModal(data, event) {
 
   modalContent.innerHTML = `<h2>${title}</h2>
                             <span class="close">&times;</span>
-                            <p>${year}</p>
+                            <p><time datetime="${year}">${year}</p>
                             <p>${plot}</p>`;
   modalContent.insertAdjacentElement('beforeend', moviePoster);
   
