@@ -180,7 +180,6 @@ function searchSuccess(data, sourceEvent){
       movieCard.insertAdjacentElement('beforeend', movieInfo);
       
       if(result.Poster != 'N/A'){
-        console.log(data, moviePoster)
         moviePoster.setAttribute('src', result.Poster);
         moviePoster.setAttribute('alt', `${movieTitle.innerText} Poster`);
       } else {
